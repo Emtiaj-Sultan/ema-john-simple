@@ -30,11 +30,42 @@ const Shop = () => {
     }, [products]);
 
     const handleCart = (product) => {
-        const newCart = [...cart, product];
+        let newCart = [];
+        const exists = cart.find(pd => pd.id === product.id);
+        if (!exists) {
+            product.quantity = 1;
+            newCart = [...cart, product];
+        }
+        else {
+            exists.quantity = exists.quantity + 1;
+            const remaining = cart.filter(pd => pd.id !== product.id);
+            newCart = [...remaining, exists];
+        }
         setCart(newCart);
         addToDb(product.id);
     };
+
     const removeToCart = (product) => {
+        let newCart = [];
+        const exists = cart.find(pd => pd.id === product.id);
+        if (product.quantity > 0) {
+            if (!exists) {
+                product.quantity = 0;
+                newCart = [...cart, product];
+            }
+            else {
+                exists.quantity = exists.quantity - 1;
+                if (exists.quantity < 0) {
+                    exists.quantity = 0;
+                    return;
+                }
+                else {
+                    const remaining = cart.filter(pd => pd.id !== product.id);
+                    newCart = [...remaining, exists];
+                }
+            }
+        }
+        setCart(newCart);
         removeFromDb(product.id);
     };
     return (

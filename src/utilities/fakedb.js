@@ -19,7 +19,6 @@ const removeFromDb = id => {
     key.forEach(key => {
         if (key === id) {
             const quantity = shoppingCart[id];
-            console.log(quantity);
             if (quantity == 1) {
                 // shoppingCart[id] = 1;
                 delete shoppingCart[id];
