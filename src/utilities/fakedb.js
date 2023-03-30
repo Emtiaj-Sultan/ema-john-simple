@@ -11,15 +11,39 @@ const addToDb = id => {
         shoppingCart[id] = newQuantity;
     }
     localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart));
-}
+};
 
 const removeFromDb = id => {
     const shoppingCart = getShoppingCart();
-    if (id in shoppingCart) {
-        delete shoppingCart[id];
-        localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart));
-    }
-}
+    let key = Object.keys(shoppingCart);
+    key.forEach(key => {
+        if (key === id) {
+            const quantity = shoppingCart[id];
+            console.log(quantity);
+            if (quantity == 1) {
+                // shoppingCart[id] = 1;
+                delete shoppingCart[id];
+                localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart));
+            }
+            else {
+                const newQuantity = quantity - 1;
+                shoppingCart[id] = newQuantity;
+            }
+            localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart));
+        }
+    });
+    // console.log(value);
+    // if (id in shoppingCart) {
+    //     value = value - 1;
+    //     console.log(id);
+    //     if (value > 0) {
+
+    //         localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart));
+    //     }
+    // if (value > 1) {
+    //     localStorage.setItem('shopping-cart', JSON.stringify(shoppingCart));
+    // }
+};
 
 const getShoppingCart = () => {
     let shoppingCart = {};
@@ -30,15 +54,15 @@ const getShoppingCart = () => {
         shoppingCart = JSON.parse(storedCart);
     }
     return shoppingCart;
-}
+};
 
 const deleteShoppingCart = () => {
     localStorage.removeItem('shopping-cart');
-}
+};
 
 export {
     addToDb,
     removeFromDb,
     getShoppingCart,
     deleteShoppingCart
-}
+};
